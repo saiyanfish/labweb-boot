@@ -6,9 +6,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tw.com.ispan.eeit64.labwebboot.entity.MemberBean;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 @Repository
 public interface RepositoryMember extends JpaRepository<MemberBean,Integer> {
+
     @Query(value = "from MemberBean  where  id > :ss")
     List<MemberBean> method1(@Param("ss") Integer id);
+    @Query(value = " from MemberBean ")
+    List<MemberBean> m1();
 }

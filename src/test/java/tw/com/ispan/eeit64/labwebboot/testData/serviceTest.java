@@ -4,7 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import tw.com.ispan.eeit64.labwebboot.entity.MemberBean;
+import tw.com.ispan.eeit64.labwebboot.entity.MessageBean;
 import tw.com.ispan.eeit64.labwebboot.service.impl.MemberService;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 @SpringBootTest
 public class serviceTest {
@@ -32,5 +36,13 @@ public class serviceTest {
          memberBean.setId(7);
         memberBean.setBio("70");
         memberService.insert(memberBean);
+    }
+    @Test
+    @Transactional
+    void select(){
+       List<MemberBean> ms= memberService.select(null);
+       for(MemberBean mm:ms){
+           System.out.println(mm.getBio());
+       }
     }
 }

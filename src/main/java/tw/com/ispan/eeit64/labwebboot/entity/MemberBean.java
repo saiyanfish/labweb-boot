@@ -1,5 +1,7 @@
 package tw.com.ispan.eeit64.labwebboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
 
 public class MemberBean {
     @OneToMany(mappedBy = "memberBean",cascade = CascadeType.ALL)
+    @JsonIgnore
    private List<MessageBean> message;
 
     @Id
