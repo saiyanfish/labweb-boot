@@ -4,7 +4,9 @@ import org.json.JSONObject;
 import org.json.JSONString;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
@@ -19,7 +21,7 @@ import javax.websocket.server.ServerEndpoint;
 public class server {
     private static Set<Session> sessions;
     private static Map<String, Set<Session>> roomMap;
-    private CountDownLatch dataMessageLatch = new CountDownLatch(1);
+//    private CountDownLatch dataMessageLatch = new CountDownLatch(1);
 
     public server() {
 
@@ -53,11 +55,12 @@ public class server {
         removeUserFromAllRooms(session);
     }
 
+
     @OnMessage
     public void onMessage(String msg, Session session) {
         try {
             // 等待 onDataMessage 處理完畢
-            dataMessageLatch.await();
+//            dataMessageLatch.await();
             System.out.println(msg);
             System.out.println("data:string");
 
@@ -73,8 +76,8 @@ public class server {
                     }
                 }
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -96,15 +99,14 @@ public class server {
                             RemoteEndpoint.Basic remote = user.getBasicRemote();
                             remote.sendBinary(byteBuffer);
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } catch (IOException e) {
+//                            e.printStackTrace();
                         }
+
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                dataMessageLatch.countDown();
             }
         }
     }
