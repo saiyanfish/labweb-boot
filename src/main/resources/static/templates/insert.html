@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <script>
+        $(function () {
+            $("#submitt").on('click', function () {
+                let data = {
+                    bio: $("#bio").val()
+                }
+                fetch("/api", {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: new Headers({
+                        "Content-Type": "application/json",
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => console.log(json));
+
+            })
+            $("#modify").on('click',()=>{
+                let data ={
+                    bio:  $("#bio").val(),
+                }
+                fetch("/api/"+$("#id").val(),{
+                    method:"PUT",
+                    body:JSON.stringify(data),
+                    headers: new Headers({
+                        "Content-Type": "application/json",
+                    })
+                })
+                    .then((response)=>response.json())
+                    .then((json)=>console.log(json));
+            })
+        })
+    </script>
+</head>
+<body>
+<input id="id">
+<br>
+<input id="bio">
+<br>
+<button id="submitt"></button>
+<button id="modify">put</button>
+</body>
+</html>

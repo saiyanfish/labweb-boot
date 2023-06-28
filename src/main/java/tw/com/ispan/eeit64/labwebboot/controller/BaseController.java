@@ -14,4 +14,9 @@ public class  BaseController{
     public String client() {
         return "client";
     }
+
+    @RequestMapping("/insert")
+    public String insert() {
+        return "insert";
+    }
 }
