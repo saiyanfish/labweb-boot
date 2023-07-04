@@ -3,6 +3,7 @@ package tw.com.ispan.eeit64.labwebboot.controller;
 import org.json.JSONObject;
 import org.json.JSONString;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import javax.websocket.server.ServerEndpoint;
 
 @Controller
 @ServerEndpoint(value = "/websocket/{room}")
+@CrossOrigin(origins = "*")
 //@Component
 public class server {
     private static Set<Session> sessions;
@@ -85,7 +87,6 @@ public class server {
     public void onDataMessage(InputStream inputStream, Session session) {
         String room = getRoomForUser(session);
         System.out.println("data:data");
-
         if (room != null) {
             Set<Session> usersInRoom = getUsersInRoom(room);
             byte[] buffer = new byte[8192];
