@@ -17,8 +17,10 @@ import java.util.Optional;
 @Service
 @Transactional
 public class MemberService implements MemberServiceInterface {
+
     @Autowired
     private RepositoryMember repositoryMember;
+
 
     @Override
     public List<MemberBean> select(MemberBean memberBean) {
@@ -27,9 +29,9 @@ public class MemberService implements MemberServiceInterface {
             Optional<MemberBean> temp = repositoryMember.findById(memberBean.getId());
             if (temp.isPresent()) {
                 result.add(temp.get());
-            } else {
-                result = repositoryMember.findAll();
             }
+        } else {
+            result = repositoryMember.findAll();
         }
         return result;
     }
@@ -37,32 +39,37 @@ public class MemberService implements MemberServiceInterface {
     @Override
     public MemberBean insert(MemberBean memberBean) {
         MemberBean result = null;
-        if(memberBean!=null && memberBean.getId()!=null){
-            if(!repositoryMember.existsById(memberBean.getId())){
-                result= repositoryMember.save(memberBean);
+        if (memberBean != null && memberBean.getId() != null) {
+            if (!repositoryMember.existsById(memberBean.getId())) {
+                memberBean.setId(null);
+                result = repositoryMember.save(memberBean);
             }
         }
 
         return result;
     }
+    public MemberBean insertWithoutId(MemberBean memberBean) {
+        MemberBean result = repositoryMember.save(memberBean);
+        return result;
+    }
 
     @Override
     public MemberBean update(MemberBean memberBean) {
-      MemberBean  result =null;
-      if( memberBean!=null &&memberBean.getId()!=null){
-          if(repositoryMember.existsById(memberBean.getId())){
-              result =repositoryMember.save(memberBean);
-          }
-      }
+        MemberBean result = null;
+        if (memberBean != null && memberBean.getId() != null) {
+            if (repositoryMember.existsById(memberBean.getId())) {
+                result = repositoryMember.save(memberBean);
+            }
+        }
         return result;
     }
 
     @Override
     public boolean delete(MemberBean memberBean) {
-        boolean result=false;
-        if(memberBean!=null&&memberBean.getId()!=null){
-        repositoryMember.deleteById(memberBean.getId());
-        result =true;
+        boolean result = false;
+        if (memberBean != null && memberBean.getId() != null) {
+            repositoryMember.deleteById(memberBean.getId());
+            result = true;
         }
 
         return result;
